@@ -1,0 +1,87 @@
+<app-card>
+  <form class="p-6" novalidate (submit)="apply($event)">
+    <h2 class="mb-1 text-section font-bold">Data producer</h2>
+    <p class="mb-6 text-muted">Applying settings starts a new run and clears current metrics.</p>
+
+    <div class="mb-5">
+      @let showInstrumentCountError =
+        (attempted() || settingsForm.instrumentCount().touched()) &&
+        settingsForm.instrumentCount().invalid();
+      <label class="mb-1 block font-bold" for="instrument-count">Instrument count</label>
+      <p class="mb-2 text-sm text-muted">Number of instruments, from 1 to 50.</p>
+      <input
+        id="instrument-count"
+        class="min-h-11 w-full rounded-control border bg-white px-3 py-2 text-ink"
+        [class.border-field-border]="!showInstrumentCountError"
+        [class.border-danger]="showInstrumentCountError"
+        type="text"
+        inputmode="numeric"
+        autocomplete="off"
+        [formField]="settingsForm.instrumentCount"
+      />
+      <p class="mt-1 min-h-5 text-sm text-danger">
+        @if (showInstrumentCountError) {
+          {{ settingsForm.instrumentCount().errors()[0].message }}
+        }
+      </p>
+    </div>
+
+    <div class="mb-5">
+      @let showUpdatesPerBatchError =
+        (attempted() || settingsForm.updatesPerBatch().touched()) &&
+        settingsForm.updatesPerBatch().invalid();
+      <label class="mb-1 block font-bold" for="updates-per-batch">Updates per batch</label>
+      <p class="mb-2 text-sm text-muted">Total updates across all instruments, from 1 to 1,000.</p>
+      <input
+        id="updates-per-batch"
+        class="min-h-11 w-full rounded-control border bg-white px-3 py-2 text-ink"
+        [class.border-field-border]="!showUpdatesPerBatchError"
+        [class.border-danger]="showUpdatesPerBatchError"
+        type="text"
+        inputmode="numeric"
+        autocomplete="off"
+        [formField]="settingsForm.updatesPerBatch"
+      />
+      <p class="mt-1 min-h-5 text-sm text-danger">
+        @if (showUpdatesPerBatchError) {
+          {{ settingsForm.updatesPerBatch().errors()[0].message }}
+        }
+      </p>
+    </div>
+
+    <div class="mb-5">
+      @let showBatchIntervalError =
+        (attempted() || settingsForm.batchIntervalMs().touched()) &&
+        settingsForm.batchIntervalMs().invalid();
+      <label class="mb-1 block font-bold" for="batch-interval">Batch interval</label>
+      <p class="mb-2 text-sm text-muted">Milliseconds between batches, from 50 to 2,000.</p>
+      <div class="relative">
+        <input
+          id="batch-interval"
+          class="min-h-11 w-full rounded-control border bg-white py-2 pr-12 pl-3 text-ink"
+          [class.border-field-border]="!showBatchIntervalError"
+          [class.border-danger]="showBatchIntervalError"
+          type="text"
+          inputmode="numeric"
+          autocomplete="off"
+          [formField]="settingsForm.batchIntervalMs"
+        />
+        <span class="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-muted"
+          >ms</span
+        >
+      </div>
+      <p class="mt-1 min-h-5 text-sm text-danger">
+        @if (showBatchIntervalError) {
+          {{ settingsForm.batchIntervalMs().errors()[0].message }}
+        }
+      </p>
+    </div>
+
+    <button
+      class="min-h-11 rounded-control border border-brand bg-brand px-4 py-3 font-bold text-white hover:bg-brand-strong"
+      type="submit"
+    >
+      Apply settings
+    </button>
+  </form>
+</app-card>

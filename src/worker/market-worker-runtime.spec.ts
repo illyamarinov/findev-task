@@ -1,6 +1,6 @@
-import type { ProducerSettings } from '../market.model';
-import { MarketWorkerRuntime, type MarketWorkerEnvironment } from './market-worker-runtime';
-import type { MarketWorkerResponse, WasmProducer } from './market-worker.messages';
+import type { ProducerSettings } from '@market/market.model';
+import { MarketWorkerRuntime, type MarketWorkerEnvironment } from '@worker/market-worker-runtime';
+import type { MarketWorkerResponse, WasmProducer } from '@worker/market-worker.messages';
 
 const settings: ProducerSettings = {
   instrumentCount: 1,

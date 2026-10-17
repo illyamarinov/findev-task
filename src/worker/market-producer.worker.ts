@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 
-import { MarketWorkerRuntime } from './market-worker-runtime';
-import type { MarketWorkerCommand, WasmProducer } from './market-worker.messages';
+import { MarketWorkerRuntime } from '@worker/market-worker-runtime';
+import type { MarketWorkerCommand, WasmProducer } from '@worker/market-worker.messages';
 
 async function loadProducer(url: string): Promise<WasmProducer> {
   let response: Response;
@@ -9,7 +9,7 @@ async function loadProducer(url: string): Promise<WasmProducer> {
   try {
     response = await fetch(url);
   } catch (error) {
-    throw new Error(`Unable to fetch market producer: ${errorMessage(error)}`);
+    throw new Error(`Unable to fetch market producer: ${errorMessage(error)}`, { cause: error });
   }
 
   if (!response.ok) {
@@ -22,7 +22,9 @@ async function loadProducer(url: string): Promise<WasmProducer> {
     const { instance } = await WebAssembly.instantiate(await response.arrayBuffer());
     exports = instance.exports;
   } catch (error) {
-    throw new Error(`Unable to initialize market producer: ${errorMessage(error)}`);
+    throw new Error(`Unable to initialize market producer: ${errorMessage(error)}`, {
+      cause: error,
+    });
   }
 
   if (

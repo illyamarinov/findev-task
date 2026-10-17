@@ -1,20 +1,22 @@
 import { DOCUMENT } from '@angular/common';
 import { DestroyRef, Service, inject, signal } from '@angular/core';
-import { createEmptyMarketState, getInstrumentMetrics } from '../metrics/market-metrics';
-import { type InstrumentMetrics, type ProducerSettings } from '../market.model';
+import { createEmptyMarketState, getInstrumentMetrics } from '@market/metrics/market-metrics';
+import {
+  type InstrumentMetrics,
+  type ProducerSettings,
+  type ProducerStatus,
+} from '@market/market.model';
 import {
   DEFAULT_PRODUCER_SETTINGS,
   type ProducerSettingsInput,
   type SettingsValidationResult,
   validateProducerSettings,
-} from './producer-settings';
-import type { MarketWorkerCommand, MarketWorkerResponse } from '../worker/market-worker.messages';
-
-export type ProducerStatus =
-  'idle' | 'initializing' | 'running' | 'pausing' | 'paused' | 'resuming' | 'error';
+} from '@market/producer/producer-settings';
+import type { MarketWorkerCommand, MarketWorkerResponse } from '@worker/market-worker.messages';
+import { createMarketWorker } from '@worker/create-market-worker';
 
 @Service()
-export class MarketProducerService {
+export class MarketProducer {
   private readonly document = inject(DOCUMENT);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -65,9 +67,7 @@ export class MarketProducerService {
         throw new Error('Web Workers are unavailable in this browser.');
       }
 
-      const worker = new Worker(new URL('../worker/market-producer.worker', import.meta.url), {
-        type: 'module',
-      });
+      const worker = createMarketWorker();
 
       this.worker = worker;
 

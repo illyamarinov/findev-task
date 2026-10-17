@@ -1,0 +1,23 @@
+<section>
+  <div class="mb-7">
+    <p class="mb-2 text-xs font-extrabold tracking-widest text-brand-strong uppercase">
+      Producer configuration
+    </p>
+    <h1 class="mb-2 text-page-title font-bold tracking-[-0.04em]">Settings</h1>
+    <p class="text-muted">
+      Choose how much market data to generate. Changes take effect only when you select Apply.
+    </p>
+  </div>
+
+  <div class="grid items-start gap-5 md:grid-cols-[minmax(0,1.5fr)_minmax(16rem,0.8fr)]">
+    <app-settings-form
+      [settings]="producer.settings()"
+      (settingsSubmitted)="applySettings($event)"
+    />
+    <app-active-run-card
+      [settings]="producer.settings()"
+      [status]="producer.status()"
+      [error]="producer.error()"
+    />
+  </div>
+</section>

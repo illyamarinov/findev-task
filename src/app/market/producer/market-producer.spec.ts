@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { MarketProducerService } from './market-producer.service';
-import type { MarketWorkerCommand, MarketWorkerResponse } from '../worker/market-worker.messages';
+import { MarketProducer } from '@market/producer/market-producer';
+import type { MarketWorkerCommand, MarketWorkerResponse } from '@worker/market-worker.messages';
 
 class FakeWorker {
   static instances: FakeWorker[] = [];
@@ -43,14 +43,14 @@ class FakeWorker {
   }
 }
 
-describe('market producer service', () => {
-  let service: MarketProducerService;
+describe('MarketProducer', () => {
+  let service: MarketProducer;
 
   beforeEach(() => {
     FakeWorker.instances = [];
     vi.stubGlobal('Worker', FakeWorker);
     TestBed.configureTestingModule({});
-    service = TestBed.inject(MarketProducerService);
+    service = TestBed.inject(MarketProducer);
   });
 
   afterEach(() => {

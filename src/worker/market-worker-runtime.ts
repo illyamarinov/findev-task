@@ -2,14 +2,14 @@ import {
   applyPackedMarketBatch,
   createEmptyMarketState,
   getInstrumentMetrics,
-} from '../metrics/market-metrics';
-import { MARKET_UPDATE_WORDS, type MarketState, type ProducerSettings } from '../market.model';
-import { validateProducerSettings } from '../producer/producer-settings';
+} from '@market/metrics/market-metrics';
+import { MARKET_UPDATE_WORDS, type MarketState, type ProducerSettings } from '@market/market.model';
+import { validateProducerSettings } from '@market/producer/producer-settings';
 import type {
   MarketWorkerCommand,
   MarketWorkerResponse,
   WasmProducer,
-} from './market-worker.messages';
+} from '@worker/market-worker.messages';
 
 const SNAPSHOT_INTERVAL_MS = 100;
 const DEFAULT_SEED = 0;

@@ -1,0 +1,35 @@
+<aside>
+  <app-card>
+    <div class="p-6">
+      <h2 class="mb-1 text-section font-bold">Active run</h2>
+      <p class="mt-4 mb-5 text-muted">
+        Status: <strong class="text-ink capitalize">{{ status() }}</strong>
+      </p>
+      <dl>
+        <div class="flex justify-between gap-4 border-t border-line py-3">
+          <dt class="text-muted">Instruments</dt>
+          <dd class="font-bold whitespace-nowrap tabular-nums">
+            {{ settings().instrumentCount }}
+          </dd>
+        </div>
+        <div class="flex justify-between gap-4 border-t border-line py-3">
+          <dt class="text-muted">Updates per batch</dt>
+          <dd class="font-bold whitespace-nowrap tabular-nums">
+            {{ settings().updatesPerBatch }}
+          </dd>
+        </div>
+        <div class="flex justify-between gap-4 border-t border-line py-3">
+          <dt class="text-muted">Batch interval</dt>
+          <dd class="font-bold whitespace-nowrap tabular-nums">
+            {{ settings().batchIntervalMs }} ms
+          </dd>
+        </div>
+      </dl>
+      @if (error(); as message) {
+        <p class="mt-4 rounded-control border border-danger-border bg-danger-soft p-3 text-danger">
+          Producer error: {{ message }}
+        </p>
+      }
+    </div>
+  </app-card>
+</aside>

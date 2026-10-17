@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 const RECORD_WORDS = 7;
-const wasm = await readFile(new URL('../public/market-producer.wasm', import.meta.url));
+const wasm = await readFile(new URL(import.meta.resolve('#market/wasm')));
 
 async function createProducer() {
   const { instance } = await WebAssembly.instantiate(wasm);

@@ -1,0 +1,18 @@
+<div class="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+  <p class="inline-flex items-center gap-2 font-semibold whitespace-nowrap text-muted">
+    <span
+      class="size-2 rounded-full"
+      [class.bg-success]="status() === 'running'"
+      [class.bg-status-idle]="status() !== 'running'"
+    ></span>
+    Producer: {{ statusLabel() }}
+  </p>
+  <button
+    type="button"
+    class="min-w-36 rounded-control border border-brand bg-brand px-4 py-3 font-bold text-white hover:bg-brand-strong disabled:border-line disabled:bg-control-disabled disabled:text-muted"
+    [disabled]="!canToggle()"
+    (click)="toggleRequested.emit()"
+  >
+    {{ controlLabel() }}
+  </button>
+</div>

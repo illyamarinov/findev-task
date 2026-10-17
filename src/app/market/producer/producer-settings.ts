@@ -1,5 +1,5 @@
-import { type IntegerValidationError, validateInteger } from '../../shared/utils/validate-integer';
-import { type ProducerSettings } from '../market.model';
+import { type IntegerValidationError, validateInteger } from '@shared/utils/validate-integer';
+import { type ProducerSettings } from '@market/market.model';
 
 export type SettingsValidationError = IntegerValidationError;
 export type SettingsValidationErrors = Partial<

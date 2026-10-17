@@ -5,13 +5,13 @@ import {
   provideBrowserGlobalErrorListeners,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { MarketProducerService } from './market/producer/market-producer.service';
-import { routes } from './app.routes';
+import { MarketProducer } from '@market/producer/market-producer';
+import { routes } from '@app/app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideAppInitializer(() => inject(MarketProducerService).startDefaults()),
+    provideAppInitializer(() => inject(MarketProducer).startDefaults()),
   ],
 };

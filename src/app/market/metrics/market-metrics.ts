@@ -4,8 +4,8 @@ import {
   MARKET_UPDATE_WORDS,
   MarketState,
   MarketUpdate,
-} from '../market.model';
-import { PRODUCER_SETTING_LIMITS } from '../producer/producer-settings';
+} from '@market/market.model';
+import { PRODUCER_SETTING_LIMITS } from '@market/producer/producer-settings';
 
 type MutableInstrumentState = { -readonly [Key in keyof InstrumentState]: InstrumentState[Key] };
 

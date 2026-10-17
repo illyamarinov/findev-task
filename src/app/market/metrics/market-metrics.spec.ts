@@ -1,10 +1,10 @@
-import { MarketUpdate } from '../market.model';
+import { MarketUpdate } from '@market/market.model';
 import {
   applyMarketBatch,
   applyPackedMarketBatch,
   createEmptyMarketState,
   getInstrumentMetrics,
-} from './market-metrics';
+} from '@market/metrics/market-metrics';
 
 function update(overrides: Partial<MarketUpdate> = {}): MarketUpdate {
   return {

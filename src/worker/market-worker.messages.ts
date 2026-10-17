@@ -1,4 +1,4 @@
-import type { InstrumentMetrics, ProducerSettings } from '../market.model';
+import type { InstrumentMetrics, ProducerSettings } from '@market/market.model';
 
 export type MarketWorkerCommand =
   | {

@@ -1,0 +1,49 @@
+<app-card class="overflow-hidden">
+  <div class="border-b border-line px-6 py-5">
+    <h2 class="mb-1 text-section font-bold">Instrument metrics</h2>
+    <p class="text-muted">Values update while the producer is running.</p>
+  </div>
+
+  <div class="max-w-full overflow-x-auto" tabindex="0">
+    <table class="w-full min-w-[61rem] border-collapse tabular-nums">
+      <caption class="sr-only">
+        Current metrics for each simulated instrument
+      </caption>
+      <thead class="bg-table-head text-xs font-bold text-muted">
+        <tr class="border-b border-line">
+          <th
+            class="sticky left-0 z-20 bg-table-head px-4 py-4 text-left whitespace-nowrap"
+            scope="col"
+          >
+            Instrument
+          </th>
+          <th class="px-4 py-4 text-right whitespace-nowrap" scope="col">Last traded price</th>
+          <th class="px-4 py-4 text-right whitespace-nowrap" scope="col">Bid–ask spread</th>
+          <th class="px-4 py-4 text-right whitespace-nowrap" scope="col">Trading volume</th>
+          <th class="px-4 py-4 text-right whitespace-nowrap" scope="col">VWAP</th>
+          <th class="px-4 py-4 text-right whitespace-nowrap" scope="col">Order-book imbalance</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of rows(); track row.symbol) {
+          <tr class="border-b border-line last:border-b-0">
+            <th
+              class="sticky left-0 z-10 bg-surface px-4 py-4 text-left font-bold whitespace-nowrap"
+              scope="row"
+            >
+              {{ row.symbol }}
+            </th>
+            <td class="px-4 py-4 text-right whitespace-nowrap">{{ row.lastTradePrice }}</td>
+            <td class="px-4 py-4 text-right whitespace-nowrap">{{ row.spread }}</td>
+            <td class="px-4 py-4 text-right whitespace-nowrap">{{ row.volume }}</td>
+            <td class="px-4 py-4 text-right whitespace-nowrap">{{ row.vwap }}</td>
+            <td class="px-4 py-4 text-right whitespace-nowrap">{{ row.imbalance }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  <p class="border-t border-line px-4 py-3 text-xs text-muted lg:hidden">
+    Scroll horizontally to view all metrics on smaller screens.
+  </p>
+</app-card>

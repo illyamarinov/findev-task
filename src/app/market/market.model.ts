@@ -16,6 +16,9 @@ export interface ProducerSettings {
   readonly batchIntervalMs: number; // by default: 500 (in ms)
 }
 
+export type ProducerStatus =
+  'idle' | 'initializing' | 'running' | 'pausing' | 'paused' | 'resuming' | 'error';
+
 export interface InstrumentMetrics {
   readonly symbol: string;
   readonly lastTradePriceCents: number | null;

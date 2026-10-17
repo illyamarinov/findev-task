@@ -1,4 +1,7 @@
-import { DEFAULT_PRODUCER_SETTINGS, validateProducerSettings } from './producer-settings';
+import {
+  DEFAULT_PRODUCER_SETTINGS,
+  validateProducerSettings,
+} from '@market/producer/producer-settings';
 
 describe('producer settings', () => {
   it('accepts the defaults and inclusive boundaries', () => {

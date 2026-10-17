@@ -2,6 +2,19 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.3.
 
+## Architecture
+
+- `src/app/` contains the application shell, routes, and bootstrap configuration.
+- `src/app/pages/` contains smart Dashboard and Settings pages and their local UI components.
+- `src/app/market/` contains market models, metrics, settings validation, and the app-wide producer service.
+- `src/app/shared/ui/` contains reusable navigation and card components; `shared/utils/` contains reusable helpers.
+- `src/worker/` contains the Worker entry point, runtime, and message contract. It uses `src/app/market/` without importing Angular.
+- `assembly/` contains the AssemblyScript market update generator compiled to WebAssembly.
+
+TypeScript imports use the `@app/*`, `@pages/*`, `@market/*`, `@shared/*`, and `@worker/*` aliases defined in `tsconfig.json`.
+
+Pages coordinate `MarketProducer`; UI components receive state through inputs and send user actions through outputs. The Settings form owns its unsaved draft and validation.
+
 ## Development server
 
 To start a local development server, run:
@@ -42,6 +55,14 @@ To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use th
 
 ```bash
 ng test
+```
+
+## Linting
+
+Run ESLint for Angular TypeScript files and templates:
+
+```bash
+npm run lint
 ```
 
 ## Running end-to-end tests
