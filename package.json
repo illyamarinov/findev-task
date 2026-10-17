@@ -3,9 +3,15 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "build:wasm": "asc --config asconfig.json --target release",
+    "prestart": "npm run build:wasm",
     "start": "ng serve",
+    "prebuild": "npm run build:wasm",
     "build": "ng build",
+    "prewatch": "npm run build:wasm",
     "watch": "ng build --watch --configuration development",
+    "pretest:wasm": "npm run build:wasm",
+    "test:wasm": "node assembly/market-producer.test.mjs",
     "test": "ng test"
   },
   "private": true,
@@ -24,6 +30,7 @@
     "@angular/build": "^22.2.3",
     "@angular/cli": "^22.2.3",
     "@angular/compiler-cli": "^22.2.0",
+    "assemblyscript": "0.28.20",
     "jsdom": "^30.0.0",
     "prettier": "^3.8.1",
     "typescript": "~6.0.2",

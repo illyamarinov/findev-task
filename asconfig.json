@@ -1,0 +1,12 @@
+{
+  "entries": ["assembly/market-producer.ts"],
+  "options": {
+    "runtime": "stub"
+  },
+  "targets": {
+    "release": {
+      "optimize": true,
+      "outFile": "public/market-producer.wasm"
+    }
+  }
+}
