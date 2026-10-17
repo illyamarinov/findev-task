@@ -43,4 +43,4 @@ The dashboard does not keep the complete trade history. It accumulates volume an
 
 ## Deployment
 
-Every push to `main` runs the checks and a production build in GitHub Actions, then deploys the build output to GitHub Pages. The deployed build uses `/findev-task/` as its base path; hash-based routes such as `/#/settings` support direct loading on static hosting. Set **Settings → Pages → Build and deployment → Source** to **GitHub Actions** for the repository.
+Every push to `main` runs the checks and a production build in GitHub Actions, then deploys the build output to GitHub Pages. The deployed build uses `/findev-task/` as its base path. The workflow also copies the application shell to `settings/index.html`, so a direct visit or reload of `/findev-task/settings/` works on static hosting. Add an entry file for any new top-level route. Set **Settings → Pages → Build and deployment → Source** to **GitHub Actions** for the repository.

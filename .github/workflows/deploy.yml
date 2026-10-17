@@ -27,6 +27,10 @@ jobs:
       - run: npm run lint
       - run: npx prettier --check .
       - run: npm run build -- --base-href /findev-task/
+      - name: Provide a direct Settings page for GitHub Pages
+        run: |
+          mkdir -p dist/findev-task/browser/settings
+          cp dist/findev-task/browser/index.html dist/findev-task/browser/settings/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
