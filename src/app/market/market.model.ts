@@ -8,6 +8,8 @@ export interface MarketUpdate {
   readonly askQuantity: number;
 }
 
+export const MARKET_UPDATE_WORDS = 7;
+
 export interface ProducerSettings {
   readonly instrumentCount: number; // by default: 5
   readonly updatesPerBatch: number; // by default: 100

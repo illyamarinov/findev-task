@@ -1,5 +1,15 @@
-import { type IntegerValidationError, validateInteger } from '../shared/utils/validate-integer';
-import { type ProducerSettings } from './market.model';
+import { type IntegerValidationError, validateInteger } from '../../shared/utils/validate-integer';
+import { type ProducerSettings } from '../market.model';
+
+export type SettingsValidationError = IntegerValidationError;
+export type SettingsValidationErrors = Partial<
+  Record<keyof ProducerSettings, SettingsValidationError>
+>;
+export type ProducerSettingsInput = Partial<Record<keyof ProducerSettings, unknown>>;
+
+export type SettingsValidationResult =
+  | { readonly valid: true; readonly settings: ProducerSettings }
+  | { readonly valid: false; readonly errors: SettingsValidationErrors };
 
 export const DEFAULT_PRODUCER_SETTINGS: ProducerSettings = {
   instrumentCount: 5,
@@ -12,16 +22,6 @@ export const PRODUCER_SETTING_LIMITS = {
   updatesPerBatch: { min: 1, max: 1_000 },
   batchIntervalMs: { min: 50, max: 2_000 },
 } as const satisfies Record<keyof ProducerSettings, { min: number; max: number }>;
-
-export type SettingsValidationError = IntegerValidationError;
-export type SettingsValidationErrors = Partial<
-  Record<keyof ProducerSettings, SettingsValidationError>
->;
-export type ProducerSettingsInput = Partial<Record<keyof ProducerSettings, unknown>>;
-
-export type SettingsValidationResult =
-  | { readonly valid: true; readonly settings: ProducerSettings }
-  | { readonly valid: false; readonly errors: SettingsValidationErrors };
 
 export const validateProducerSettings = (
   input: ProducerSettingsInput,

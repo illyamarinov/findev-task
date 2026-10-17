@@ -4,9 +4,10 @@
   "scripts": {
     "ng": "ng",
     "build:wasm": "asc --config asconfig.json --target release",
+    "typecheck:worker": "tsc -p tsconfig.worker.json --noEmit",
     "prestart": "npm run build:wasm",
     "start": "ng serve",
-    "prebuild": "npm run build:wasm",
+    "prebuild": "npm run build:wasm && npm run typecheck:worker",
     "build": "ng build",
     "prewatch": "npm run build:wasm",
     "watch": "ng build --watch --configuration development",

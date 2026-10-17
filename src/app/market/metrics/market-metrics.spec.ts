@@ -1,5 +1,10 @@
-import { MarketUpdate } from './market.model';
-import { applyMarketBatch, createEmptyMarketState, getInstrumentMetrics } from './market-metrics';
+import { MarketUpdate } from '../market.model';
+import {
+  applyMarketBatch,
+  applyPackedMarketBatch,
+  createEmptyMarketState,
+  getInstrumentMetrics,
+} from './market-metrics';
 
 function update(overrides: Partial<MarketUpdate> = {}): MarketUpdate {
   return {
@@ -117,5 +122,35 @@ describe('market metrics', () => {
     expect(() =>
       applyMarketBatch(createEmptyMarketState(1), [update({ instrumentIndex: 1 })]),
     ).toThrow(Error);
+  });
+
+  it('applies packed Wasm records with the same cumulative results as object updates', () => {
+    const updates = [
+      update({ instrumentIndex: 0, priceCents: 10_000, tradeQuantity: 10 }),
+      update({ instrumentIndex: 1, priceCents: 20_000, tradeQuantity: 5 }),
+      update({ instrumentIndex: 0, priceCents: 10_200, tradeQuantity: 30 }),
+    ];
+    const packed = Int32Array.from(
+      updates.flatMap((item) => [
+        item.instrumentIndex,
+        item.priceCents,
+        item.tradeQuantity,
+        item.bidCents,
+        item.askCents,
+        item.bidQuantity,
+        item.askQuantity,
+      ]),
+    );
+    const initial = createEmptyMarketState(2);
+
+    expect(applyPackedMarketBatch(initial, packed)).toEqual(applyMarketBatch(initial, updates));
+    expect(getInstrumentMetrics(applyPackedMarketBatch(initial, packed))).toEqual(
+      getInstrumentMetrics(applyMarketBatch(initial, updates)),
+    );
+    expect(applyPackedMarketBatch(initial, new Int32Array())).toBe(initial);
+    expect(() => applyPackedMarketBatch(initial, new Int32Array(6))).toThrow(/incomplete/);
+    expect(() => applyPackedMarketBatch(initial, Int32Array.of(2, 100, 1, 99, 101, 1, 1))).toThrow(
+      /Unknown instrument/,
+    );
   });
 });

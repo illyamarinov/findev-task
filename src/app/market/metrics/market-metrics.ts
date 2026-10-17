@@ -1,7 +1,38 @@
-import { InstrumentMetrics, InstrumentState, MarketState, MarketUpdate } from './market.model';
-import { PRODUCER_SETTING_LIMITS } from './producer-settings';
+import {
+  InstrumentMetrics,
+  InstrumentState,
+  MARKET_UPDATE_WORDS,
+  MarketState,
+  MarketUpdate,
+} from '../market.model';
+import { PRODUCER_SETTING_LIMITS } from '../producer/producer-settings';
 
 type MutableInstrumentState = { -readonly [Key in keyof InstrumentState]: InstrumentState[Key] };
+
+const applyUpdate = (
+  instruments: MutableInstrumentState[],
+  instrumentIndex: number,
+  priceCents: number,
+  tradeQuantity: number,
+  bidCents: number,
+  askCents: number,
+  bidQuantity: number,
+  askQuantity: number,
+): void => {
+  const instrument = instruments[instrumentIndex];
+
+  if (!instrument) {
+    throw new Error(`Unknown instrument index: ${instrumentIndex}`);
+  }
+
+  instrument.lastTradePriceCents = priceCents;
+  instrument.bidCents = bidCents;
+  instrument.askCents = askCents;
+  instrument.bidQuantity = bidQuantity;
+  instrument.askQuantity = askQuantity;
+  instrument.volume += BigInt(tradeQuantity);
+  instrument.weightedPriceSumCents += BigInt(priceCents) * BigInt(tradeQuantity);
+};
 
 export const createEmptyMarketState = (instrumentCount: number): MarketState => {
   const { min, max } = PRODUCER_SETTING_LIMITS.instrumentCount;
@@ -34,20 +65,43 @@ export const applyMarketBatch = (
   const next: MutableInstrumentState[] = state.map((instrument) => ({ ...instrument }));
 
   for (const update of updates) {
-    const instrument = next[update.instrumentIndex];
-    if (!instrument) {
-      throw new Error(`Unknown instrument index: ${update.instrumentIndex}`);
-    }
-
-    instrument.lastTradePriceCents = update.priceCents;
-    instrument.bidCents = update.bidCents;
-    instrument.askCents = update.askCents;
-    instrument.bidQuantity = update.bidQuantity;
-    instrument.askQuantity = update.askQuantity;
-    instrument.volume += BigInt(update.tradeQuantity);
-    instrument.weightedPriceSumCents += BigInt(update.priceCents) * BigInt(update.tradeQuantity);
+    applyUpdate(
+      next,
+      update.instrumentIndex,
+      update.priceCents,
+      update.tradeQuantity,
+      update.bidCents,
+      update.askCents,
+      update.bidQuantity,
+      update.askQuantity,
+    );
   }
 
+  return next;
+};
+
+export const applyPackedMarketBatch = (state: MarketState, words: Int32Array): MarketState => {
+  if (words.length % MARKET_UPDATE_WORDS !== 0) {
+    throw new Error('Packed market batch has an incomplete update.');
+  }
+
+  if (words.length === 0) {
+    return state;
+  }
+
+  const next: MutableInstrumentState[] = state.map((instrument) => ({ ...instrument }));
+  for (let offset = 0; offset < words.length; offset += MARKET_UPDATE_WORDS) {
+    applyUpdate(
+      next,
+      words[offset],
+      words[offset + 1],
+      words[offset + 2],
+      words[offset + 3],
+      words[offset + 4],
+      words[offset + 5],
+      words[offset + 6],
+    );
+  }
   return next;
 };
 
