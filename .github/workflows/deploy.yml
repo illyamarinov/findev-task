@@ -1,0 +1,46 @@
+name: Verify and deploy
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24.15.0'
+          cache: npm
+      - run: npm ci
+      - run: npm run test:wasm
+      - run: npm test -- --watch=false
+      - run: npm run lint
+      - run: npx prettier --check .
+      - run: npm run build -- --base-href /findev-task/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist/findev-task/browser
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

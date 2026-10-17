@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Router, provideRouter } from '@angular/router';
+import { Router, provideRouter, withHashLocation } from '@angular/router';
 import { MarketProducer } from '@market/producer/market-producer';
 import { FakeMarketWorker } from '@market/producer/testing/fake-market-worker';
 import { App } from '@app/app';
@@ -11,7 +11,7 @@ describe('App routes', () => {
     vi.stubGlobal('Worker', FakeMarketWorker);
     TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideRouter(routes)],
+      providers: [provideRouter(routes, withHashLocation())],
     });
   });
 
@@ -52,6 +52,9 @@ describe('App routes', () => {
     await router.navigateByUrl('/settings');
     await fixture.whenStable();
     expect(fixture.nativeElement.querySelector('h1')?.textContent).toBe('Settings');
+    expect(
+      (fixture.nativeElement.querySelector('a[routerLink="/settings"]') as HTMLAnchorElement).hash,
+    ).toBe('#/settings');
     expect(fixture.nativeElement.textContent).toContain('Status: paused');
 
     const input = fixture.nativeElement.querySelector('#instrument-count') as HTMLInputElement;
