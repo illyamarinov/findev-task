@@ -13,10 +13,14 @@
     "watch": "ng build --watch --configuration development",
     "pretest:wasm": "npm run build:wasm",
     "test:wasm": "node assembly/market-producer.test.mjs",
-    "test": "ng test"
+    "test": "ng test",
+    "lint": "ng lint"
   },
   "private": true,
   "packageManager": "npm@11.19.0",
+  "imports": {
+    "#market/wasm": "./public/market-producer.wasm"
+  },
   "dependencies": {
     "@angular/common": "^22.2.0",
     "@angular/compiler": "^22.2.0",
@@ -31,10 +35,17 @@
     "@angular/build": "^22.2.3",
     "@angular/cli": "^22.2.3",
     "@angular/compiler-cli": "^22.2.0",
+    "@eslint/js": "^10.0.1",
+    "@tailwindcss/postcss": "^4.3.3",
+    "angular-eslint": "22.6.0",
     "assemblyscript": "0.28.20",
+    "eslint": "^10.12.0",
     "jsdom": "^30.0.0",
+    "postcss": "^8.5.30",
     "prettier": "^3.8.1",
+    "tailwindcss": "^4.3.3",
     "typescript": "~6.0.2",
+    "typescript-eslint": "8.71.0",
     "vitest": "^5.0.0"
   }
 }
